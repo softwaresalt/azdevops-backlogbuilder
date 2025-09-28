@@ -187,7 +187,7 @@ Instructions:
 Review the tasks to make sure they make sense.  You have want to remove some tasks or combine them.  User stories may also need to be reassigned under different features based on area of concern (step 7).
 Once you have a full backlog at the user story level or the task level, you'll want to convert the document to a YAML file so that it can be imported into your ADO project.
 
-Use the [work-item-loader](https://github.com/softwaresalt/workitem-loader) project to load your backlog to ADO.
+Use the [azdevops-workitem-loader](https://github.com/softwaresalt/azdevops-workitem-loader) project to load your backlog to ADO.
 
 ```markdown
 ### Prompt Example
