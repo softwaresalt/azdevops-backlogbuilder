@@ -1,0 +1,417 @@
+features:
+  - title: "Edge Data Collection & Local ML Model Hosting"
+    description: >
+      Establish a robust on-premises infrastructure for collecting IoT signals, storing data, routing messages, and hosting containerized ML models for plant operations, ensuring offline capability and seamless integration with existing systems.
+    user_stories:
+      - title: "Configure SCADA (Ignition) and HighByte for IoT Data Collection"
+        description: >
+          As an OT engineer, I want to configure SCADA (Ignition) to collect IoT signals from plant lines and integrate with HighByte for protocol translation, aggregation, and forwarding optimized MQTT messages, so that raw data is efficiently prepared for both local and cloud consumption.
+        acceptance_criteria:
+          - "SCADA (Ignition) is configured to successfully collect IoT signals from all specified plant lines."
+          - "HighByte is configured to integrate with SCADA (Ignition) and perform protocol translation."
+          - "HighByte successfully aggregates and forwards optimized MQTT messages."
+          - "Raw data is prepared in a format suitable for both local consumption (e.g., SQL Server) and cloud consumption (e.g., Azure Event Hub)."
+      - title: "Set Up Secure On-Premise HiveMQ MQTT Broker"
+        description: >
+          As an OT engineer, I want to set up the HiveMQ MQTT broker on-premises to route IoT messages within the plant infrastructure, serving as a central publish-subscribe hub for all plant data, so that various clients can efficiently communicate and access operational data.
+        acceptance_criteria:
+          - "HiveMQ MQTT broker is successfully installed and configured on-premises."
+          - "The broker can securely route IoT messages between various plant clients."
+          - "All specified plant data sources can publish messages to the broker."
+          - "All specified data consumers can subscribe to and receive messages from the broker."
+      - title: "Store IoT Device Data in On-Premise SQL Server"
+        description: >
+          As an OT engineer, I want to store device data locally in an on-premises SQL Server database for reliability and offline operation, so that historical data is always accessible even during internet outages.
+        acceptance_criteria:
+          - "An on-premises SQL Server database is set up and accessible."
+          - "IoT device data is successfully ingested and stored in the SQL Server database."
+          - "Historical data is accessible from the SQL Server database during simulated internet outages."
+          - "Data storage meets specified reliability and performance requirements."
+      - title: "Host ML Models Locally on Kubernetes Clusters via IoT Edge"
+        description: >
+          As an ML Engineer, I want to deploy containerized ML models locally within Kubernetes clusters managed by Azure IoT Edge, so that plant operations can run autonomously and are not dependent on continuous internet connectivity.
+        acceptance_criteria:
+          - "Kubernetes clusters are provisioned on-premises."
+          - "Containerized ML models are successfully deployed to the on-premises Kubernetes clusters via Azure IoT Edge."
+          - "Deployed ML models execute locally and perform their intended functions without active internet connectivity."
+          - "Plant operations remain autonomous based on local model execution."
+      - title: "Orchestrate ML Model Deployment and Management via Azure IoT Hub and Arc"
+        description: >
+          As an IT administrator, I want Azure IoT Hub to orchestrate seamless deployment and lifecycle management of containerized ML models to the edge, leveraging Azure Container Registry for storage and Azure Arc for compute management and monitoring, so that operational support for ML models is robust and scalable.
+        acceptance_criteria:
+          - "Azure IoT Hub is configured to orchestrate ML model deployments to edge devices."
+          - "Containerized ML models are stored in Azure Container Registry and accessible by IoT Hub."
+          - "Azure Arc is integrated for compute management and monitoring of edge Kubernetes clusters."
+          - "The lifecycle (deployment, update, deletion) of ML models can be seamlessly managed through Azure IoT Hub and Arc."
+          - "Monitoring data from Azure Arc is available to confirm operational status and performance."
+
+  - title: "Secure Cloud Data Ingestion"
+    description: >
+      Implement robust mechanisms for securely transmitting IoT data from on-premises MQTT brokers to Azure, ensuring data integrity, confidentiality, and efficient real-time processing within Azure Fabric.
+    user_stories:
+      - title: "Configure On-Premise HiveMQ to Send Data to Azure Event Hub"
+        description: >
+          As an OT engineer, I want to configure the on-premises HiveMQ MQTT broker to securely transmit IoT messages directly to Azure Event Hub, so that data is reliably ingested into Azure Cloud without the need for a separate cloud-based MQTT instance.
+        acceptance_criteria:
+          - "HiveMQ MQTT broker is configured to connect to Azure Event Hub."
+          - "IoT messages are securely transmitted from HiveMQ to Azure Event Hub."
+          - "Data is reliably ingested into Azure Event Hub, verified by message counts and content."
+          - "The solution avoids the deployment of an additional cloud-based MQTT instance for ingestion."
+      - title: "Process IoT Data with Azure Event Grid and Event Streams"
+        description: >
+          As a data engineer, I want IoT data from Azure Event Hub to be securely routed through Azure Event Grid and then processed by Azure Event Streams in Fabric notebooks, enabling real-time ingestion into OneLake.
+        acceptance_criteria:
+          - "Azure Event Grid is configured to subscribe to events from Azure Event Hub."
+          - "IoT data is successfully routed from Event Hub through Event Grid to Event Streams."
+          - "Fabric notebooks are configured to process data from Azure Event Streams in real-time."
+          - "Processed data is successfully ingested into OneLake."
+      - title: "Ensure Encrypted IoT Data Transmission and Device Authentication"
+        description: >
+          As a security architect, I want to ensure all IoT data transmissions use industry-standard protocols like TLS/SSL and implement robust device authentication mechanisms, including certificate-based authentication and mutual TLS, so that data integrity and confidentiality are safeguarded during transit and unauthorized access is prevented.
+        acceptance_criteria:
+          - "All IoT data transmissions (on-prem to cloud, and within on-prem where applicable) enforce TLS/SSL encryption (TLS 1.2 or higher)."
+          - "Device authentication mechanisms (e.g., certificate-based authentication, mutual TLS) are implemented and enforced for all IoT devices and clients."
+          - "Only authenticated devices can transmit data."
+          - "Data integrity and confidentiality are verified through security audits and monitoring."
+
+  - title: "Azure Fabric Data Integration & Curation"
+    description: >
+      Establish a scalable and structured data environment within Azure Fabric using a medallion architecture (Bronze, Silver, Gold workspaces) to ingest, clean, standardize, enrich, and model data for advanced analytics and ML operations.
+    user_stories:
+      - title: "Load Processed IoT Data into Fabric Bronze Lakehouse"
+        description: >
+          As a data engineer, I want to ingest streaming IoT data from Azure Event Streams into a Bronze Lakehouse within Azure Fabric, so that raw data is readily available for initial processing and historical storage.
+        acceptance_criteria:
+          - "A Bronze Lakehouse is created within Azure Fabric."
+          - "Streaming IoT data from Azure Event Streams is successfully ingested into the Bronze Lakehouse."
+          - "Raw data is stored in its original format in the Bronze Lakehouse."
+          - "Data is readily available for subsequent processing steps."
+      - title: "Implement Spark Structured Streaming for Bronze Data Curation"
+        description: >
+          As a data engineer, I want to utilize Spark Structured Streaming notebooks and Fabric Pipelines to curate raw IoT data in the Bronze layer, enriching it with metadata and partitioning for performance, so that it is optimized for subsequent processing.
+        acceptance_criteria:
+          - "Spark Structured Streaming notebooks are developed and deployed to process data in the Bronze Lakehouse."
+          - "Fabric Pipelines are configured to orchestrate the Bronze data curation process."
+          - "Raw IoT data is successfully enriched with specified metadata (e.g., timestamps, device IDs)."
+          - "Data is partitioned effectively within the Bronze layer to optimize query performance."
+          - "Curated data in Bronze is suitable for the next processing stages (Silver layer)."
+      - title: "Create Silver Fabric Workspace for Data Refinement"
+        description: >
+          As a data engineer, I want to create a Silver Fabric workspace dedicated to data cleansing, standardization, and further enrichment, so that data quality is consistently improved before advanced modeling.
+        acceptance_criteria:
+          - "A dedicated Silver Fabric workspace is created."
+          - "Pipelines and notebooks are configured within the Silver workspace for data cleansing processes (e.g., handling missing values, outlier detection)."
+          - "Data standardization rules are applied to ensure consistent formats."
+          - "Data is further enriched with relevant contextual information as defined."
+          - "Data quality metrics demonstrate consistent improvement in the Silver layer."
+      - title: "Design Gold Fabric Workspace for Analytics and ML Operations"
+        description: >
+          As a data scientist, I want to establish a Gold Fabric workspace for advanced data modeling, ML operations, analytics, and refined business insights, so that high-quality, actionable data is available for comprehensive reporting and ML use cases.
+        acceptance_criteria:
+          - "A Gold Fabric workspace is created and configured."
+          - "Data models suitable for analytics and ML operations are designed and implemented in the Gold layer."
+          - "High-quality, actionable data is available in the Gold layer for comprehensive reporting."
+          - "The Gold layer supports various ML use cases based on refined business insights."
+      - title: "Create Fabric Shortcuts for ACME Dynamics 365 Data"
+        description: >
+          As a data engineer, I want to create Fabric Shortcuts to seamlessly integrate business data from ACME Dataverse (Dynamics 365) into Fabric datasets, so that OT data can be combined with financial and operational insights for holistic analysis.
+        acceptance_criteria:
+          - "Fabric Shortcuts are successfully created to ACME Dataverse (Dynamics 365)."
+          - "Business data from ACME Dataverse is seamlessly integrated into Fabric datasets via these shortcuts."
+          - "OT data can be combined with financial and operational insights for holistic analysis."
+          - "Data access through shortcuts demonstrates expected performance and reliability."
+
+  - title: "Power BI Reporting & Visualization"
+    description: >
+      Implement a structured deployment pipeline for Power BI assets (semantic models, dashboards, reports, apps) across Dev, Test, and Production environments, enabling high-performance analytics and broad user consumption.
+    user_stories:
+      - title: "Set Up Power BI Deployment Pipelines for Environments"
+        description: >
+          As a BI developer, I want to establish a structured deployment pipeline spanning Dev, Test, and Prod workspaces for Power BI assets, so that changes can be promoted consistently and reliably across environments.
+        acceptance_criteria:
+          - "Dev, Test, and Production Power BI workspaces are created and configured."
+          - "A Power BI deployment pipeline is set up to connect these workspaces."
+          - "Changes to Power BI assets can be successfully promoted from Dev to Test, and from Test to Production."
+          - "The deployment process is consistent and reliable, with minimal manual steps."
+      - title: "Author and Test Semantic Models in Development Workspace"
+        description: >
+          As a BI developer, I want to author and test semantic models in the Dev workspace, so that data definitions are consistent and accurate before wider consumption and deployment.
+        acceptance_criteria:
+          - "Semantic models are developed in the Dev workspace, connecting to relevant data sources (e.g., Gold Lakehouse)."
+          - "Data definitions within the semantic models are consistent and accurate as per requirements."
+          - "Semantic models are thoroughly tested in the Dev environment for data integrity, performance, and accuracy."
+          - "Changes to semantic models can be versioned and managed."
+      - title: "Conduct Validation of Power BI Assets in Test Workspace"
+        description: >
+          As a BI developer, I want to validate semantic models, dashboards, and reports in the Test workspace, so that functionality and data accuracy can be confirmed by a limited user group before production deployment.
+        acceptance_criteria:
+          - "Semantic models, dashboards, and reports are successfully deployed to the Test workspace via the deployment pipeline."
+          - "A limited group of users (e.g., UAT testers) can access and review the assets in the Test environment."
+          - "Functionality of dashboards and reports is validated by the test user group."
+          - "Data accuracy in reports and dashboards is confirmed against source data or expected results."
+          - "Feedback from the test user group is collected and addressed."
+      - title: "Deploy Approved Power BI Content to Production"
+        description: >
+          As a BI developer, I want to deploy approved semantic models, dashboards, reports, and apps to the Production workspace using Power BI deployment pipelines, so that end-users have access to the final, verified content.
+        acceptance_criteria:
+          - "Approved Power BI assets are successfully deployed to the Production workspace using the established deployment pipeline."
+          - "All semantic models, dashboards, reports, and apps are accessible in the Production environment."
+          - "End-users can access the final, verified content without issues."
+          - "Deployment process is documented and repeatable."
+      - title: "Enable Direct Lake Connection for Production Power BI Reports"
+        description: >
+          As a BI developer, I want to connect production Power BI reports and dashboards directly to Gold Workspace datasets via Direct Lake, so that high-performance analytics are achieved with minimal data movement and up-to-date insights.
+        acceptance_criteria:
+          - "Power BI reports and dashboards are configured to connect to Gold Workspace datasets using Direct Lake mode."
+          - "Data refresh for these reports demonstrates minimal latency and data movement."
+          - "Query performance of reports and dashboards leveraging Direct Lake meets high-performance requirements."
+          - "Insights displayed in reports are consistently up-to-date with the Gold layer data."
+      - title: "Maintain Consistent Semantic Models Across Environments"
+        description: >
+          As a BI lead, I want to maintain a single semantic model per environment and propagate it through workspaces, so that data consistency and governance are ensured across all reporting.
+        acceptance_criteria:
+          - "A single, canonical semantic model is defined and used for each environment (Dev, Test, Prod)."
+          - "Changes to the semantic model are propagated consistently through the deployment pipeline."
+          - "Data definitions and measures derived from the semantic model are consistent across all reports and dashboards in each environment."
+          - "Data governance policies are adhered to, with the semantic model serving as a single source of truth."
+      - title: "Package and Publish Power BI Apps for User Access"
+        description: >
+          As a BI developer, I want to support robust application packaging and publishing across workspaces using Fabric apps, so that end-users can easily access relevant reports and dashboards based on their roles and permissions.
+        acceptance_criteria:
+          - "Power BI reports and dashboards are grouped into Fabric apps."
+          - "Apps are published to relevant end-user groups with appropriate roles and permissions."
+          - "End-users can easily discover and access the published Power BI apps."
+          - "Access to reports and dashboards within the apps is correctly governed by user roles and permissions."
+      - title: "Create Power BI Reports for Plant Operational Performance"
+        description: >
+          As a plant manager, I want Power BI reports that utilize summarized OT data to show real-time plant performance and key operational metrics, so that I can monitor efficiency and identify areas for improvement.
+        acceptance_criteria:
+          - "Power BI reports are developed that display summarized OT data."
+          - "Key operational metrics (e.g., OEE, throughput, downtime) are accurately presented in the reports."
+          - "Reports provide near real-time insights into plant performance."
+          - "Plant managers can use the reports to identify efficiency gaps and areas for improvement."
+      - title: "Implement Power BI Reports for ML Model Performance Monitoring"
+        description: >
+          As a data scientist, I want Power BI reports that track ML model performance, including data drift and key outputs, so that I can ensure the models are performing as expected and identify needs for retraining.
+        acceptance_criteria:
+          - "Power BI reports are developed to track key ML model performance metrics (e.g., accuracy, precision, recall, F1-score)."
+          - "Reports clearly visualize data drift detected in model inputs over time."
+          - "Key outputs and predictions from ML models are monitored and displayed."
+          - "Data scientists can use these reports to assess if models are performing as expected."
+          - "Reports provide clear indicators or triggers for when model retraining might be necessary."
+
+  - title: "MLOps & Model Lifecycle Management"
+    description: >
+      Establish comprehensive MLOps practices within Azure Fabric to manage the entire ML model lifecycle, from training and versioning to deployment, monitoring, and retraining, leveraging integrated tools and external source control.
+    user_stories:
+      - title: "Use GitHub Enterprise for ML Code and Model Source Control"
+        description: >
+          As an ML engineer, I want to use GitHub Enterprise for robust source control of ML models, notebooks, and related code, so that versioning is tracked, collaboration is streamlined, and a reliable history of changes is maintained.
+        acceptance_criteria:
+          - "All ML models, notebooks, and associated code are stored in GitHub Enterprise."
+          - "Versioning for all ML assets is properly tracked and accessible through GitHub."
+          - "Collaboration features (e.g., branching, pull requests) are utilized effectively for ML development."
+          - "A complete and reliable history of changes for all ML code and models is maintained in GitHub."
+      - title: "Employ MLFlow for ML Experiment and Version Tracking"
+        description: >
+          As an ML engineer, I want to employ integrated MLFlow within Fabric to track ML experiments and manage model versions, so that model development is organized, reproducible, and provides clear visibility into different trials.
+        acceptance_criteria:
+          - "MLFlow is successfully integrated and configured within Fabric."
+          - "All ML experiments (e.g., parameters, metrics, artifacts) are tracked using MLFlow."
+          - "Different model versions are managed and visible within MLFlow."
+          - "Model development is reproducible based on MLFlow tracking data."
+          - "Clear visibility into different model trials and their performance is available through MLFlow."
+      - title: "Automate Containerized ML Model Deployment to Edge"
+        description: >
+          As an ML engineer, I want to automate the deployment of trained ML models as containers to on-premises Kubernetes clusters via Azure IoT Edge, so that new or updated models can be operationalized efficiently and reliably on the plant floor.
+        acceptance_criteria:
+          - "A robust automated pipeline for deploying containerized ML models to on-premises Kubernetes clusters is established."
+          - "Deployment is initiated and managed via Azure IoT Edge."
+          - "New and updated ML models are deployed efficiently with minimal manual intervention."
+          - "Deployed models are operational and running reliably on the plant floor."
+          - "Deployment status and logs are accessible for monitoring and troubleshooting."
+      - title: "Establish ML Model Monitoring and Retraining Procedures"
+        description: >
+          As a data scientist, I want to establish practices for monitoring ML model performance (e.g., data drift, output validation) and defining triggers for retraining, so that models remain accurate and effective over time as conditions change.
+        acceptance_criteria:
+          - "Monitoring mechanisms are in place to track ML model performance metrics (e.g., accuracy, precision, recall)."
+          - "Data drift detection is implemented and monitored for ML model inputs."
+          - "Model output validation procedures are established and automated where possible."
+          - "Clear triggers and criteria for ML model retraining are defined and documented."
+          - "The retraining process is initiated when triggers are met, leading to updated models."
+      - title: "Implement Azure DevOps CI/CD for ML Solutions"
+        description: >
+          As a DevOps engineer, I want to leverage Azure DevOps for CI/CD pipelines for ML workflows, so that automated testing, building, and deployment of ML solutions are streamlined and consistent.
+        acceptance_criteria:
+          - "Azure DevOps is configured to host CI/CD pipelines for ML workflows."
+          - "CI pipelines are implemented for automated testing and building of ML code and models."
+          - "CD pipelines are implemented for automated deployment of ML solutions to target environments."
+          - "The entire ML workflow, from code commit to deployment, is streamlined and consistent through CI/CD."
+          - "Automated tests are executed successfully as part of the CI process, and deployment artifacts are generated reliably."
+
+  - title: "Security & Governance"
+    description: >
+      Implement a robust security and governance framework across the Azure and on-premises environments, ensuring centralized monitoring, strong identity and access management, compliance, and proactive threat detection.
+    user_stories:
+      - title: "Consolidate Azure Sentinel for Multi-Tenant Monitoring"
+        description: >
+          As a security architect, I want to centralize monitoring using a consolidated Azure Sentinel instance across ACME and Acme-Sub tenants, so that security visibility is enhanced, and cost management is optimized for all related activities.
+        acceptance_criteria:
+          - "A consolidated Azure Sentinel instance is deployed and configured to monitor both ACME and Acme-Sub tenants."
+          - "Security logs and events from both tenants are successfully ingested into the central Sentinel instance."
+          - "Security visibility across both tenants is enhanced, demonstrated by centralized dashboards and alerts."
+          - "Cost management for security monitoring activities is optimized through consolidation."
+      - title: "Implement Strong Identity and Access Management"
+        description: >
+          As a security architect, I want to implement Microsoft Entra ID with conditional access and multifactor authentication (MFA), so that robust identity and access management is enforced, and only authorized users can access resources securely.
+        acceptance_criteria:
+          - "Microsoft Entra ID is configured as the primary identity provider."
+          - "Conditional Access policies are defined and enforced based on specified conditions (e.g., location, device compliance)."
+          - "Multifactor Authentication (MFA) is enabled and enforced for all relevant user groups or access scenarios."
+          - "Only authorized users can access resources after successfully meeting conditional access and MFA requirements."
+      - title: "Ensure Comprehensive Auditing, Logging, and Compliance"
+        description: >
+          As a security architect, I want to establish thorough auditing, logging (including sign-in logs to Log Analytics workspace), and compliance monitoring practices across the environment, so that security incidents can be effectively investigated, and industry standards are met.
+        acceptance_criteria:
+          - "Comprehensive auditing is enabled across all critical Azure resources and on-premises components."
+          - "All relevant logs, including sign-in logs, are successfully ingested into a Log Analytics workspace."
+          - "Compliance monitoring tools are configured to track adherence to specified industry standards and internal policies."
+          - "Security incidents can be effectively investigated using collected audit and log data."
+      - title: "Enforce Azure Policy for Consistent Resource Deployment"
+        description: >
+          As an IT administrator, I want to enforce Azure Policy for resource configuration, so that resources are deployed with consistent security baselines, and ad-hoc deployments are controlled and comply with organizational standards.
+        acceptance_criteria:
+          - "Azure Policy definitions are created and assigned to enforce desired resource configurations and security baselines."
+          - "All new resource deployments automatically comply with the defined Azure Policies."
+          - "Non-compliant resources are identified and, if configured, remediated by Azure Policy."
+          - "Ad-hoc deployments are controlled and prevented if they do not comply with organizational standards."
+      - title: "Utilize Azure Key Vault for Secure Credential Storage"
+        description: >
+          As a security architect, I want to centralize the storage of credentials, passwords, and certificates in Azure Key Vault, so that sensitive information is securely managed and accessed by authorized services and applications.
+        acceptance_criteria:
+          - "All specified credentials, passwords, and certificates are securely stored in Azure Key Vault."
+          - "Access policies are configured in Key Vault to ensure only authorized services and applications can retrieve secrets."
+          - "Sensitive information is successfully managed and accessed through Key Vault by designated consumers."
+          - "Integration with applications and services requiring secrets is verified."
+      - title: "Implement Automated Secrets Rotation Policy"
+        description: >
+          As a security architect, I want to implement and automate a rotation policy for secrets stored in Key Vault, so that the risk of credential compromise is minimized over time.
+        acceptance_criteria:
+          - "A secrets rotation policy is defined for all relevant secrets stored in Key Vault."
+          - "Automated processes (e.g., Azure Functions, Azure Automation) are implemented to execute the secrets rotation policy."
+          - "Secrets are automatically rotated according to the defined schedule."
+          - "The rotation process is validated to ensure uninterrupted service operation after rotation."
+      - title: "Govern Cross-Tenant Access for ACME Guest Accounts"
+        description: >
+          As an IT administrator, I want to effectively manage cross-tenant access for ACME resources (e.g., networking teams) accessing Acme-Sub's tenant via guest accounts and cross-tenant synchronization (Lighthouse), so that collaboration is enabled with appropriate authorization and control.
+        acceptance_criteria:
+          - "Cross-tenant access for ACME resources (e.g., networking teams) is enabled via guest accounts in Acme-Sub's tenant."
+          - "Azure Lighthouse is configured for cross-tenant synchronization and management of specified resources."
+          - "Access for ACME users is granted with the principle of least privilege."
+          - "Collaboration between ACME and Acme-Sub teams is enabled and effectively managed."
+      - title: "Conduct Periodic Access Reviews for Guest Accounts"
+        description: >
+          As a security administrator, I want to conduct regular access reviews for guest accounts, including setting expiration dates and using automation scripts for stale accounts, so that unnecessary access is revoked, and potential security vulnerabilities are closed.
+        acceptance_criteria:
+          - "A process for regular access reviews of all guest accounts is established and documented."
+          - "Expiration dates are set for guest accounts as appropriate."
+          - "Automation scripts are developed and executed to identify and manage stale guest accounts."
+          - "Unnecessary access for guest accounts is identified and revoked promptly."
+      - title: "Encrypt and Authenticate MQTT Broker Communications"
+        description: >
+          As a network engineer, I want to secure communications between MQTT clients and brokers using TLS 1.2/1.3 and implement client authentication (e.g., username/password, TLS certificates, or OAuth), so that data integrity and confidentiality are maintained during transit and unauthorized connections are prevented.
+        acceptance_criteria:
+          - "All communications between MQTT clients and brokers utilize TLS 1.2/1.3 encryption."
+          - "Client authentication mechanisms (e.g., username/password, TLS certificates, or OAuth) are implemented and enforced."
+          - "Only authenticated clients can establish connections with the MQTT broker."
+          - "Data integrity and confidentiality of MQTT messages are verified."
+      - title: "Configure Firewalls and VNet Peering for Secure Connectivity"
+        description: >
+          As a network engineer, I want to review and configure firewall rules and VNet peering between cloud and on-prem environments (traversing ACME tenant via VWAN virtual hub for temporary connectivity), so that network traffic is managed securely and robust connectivity is ensured.
+        acceptance_criteria:
+          - "Firewall rules are reviewed and configured to allow only necessary traffic between cloud and on-premises environments."
+          - "VNet peering is successfully established between relevant VNets in the cloud and on-premises (if applicable via ExpressRoute/VPN)."
+          - "Connectivity traverses the ACME tenant via VWAN virtual hub as specified for temporary connections."
+          - "Network traffic flows securely and as intended between all connected environments."
+
+  - title: "Monitoring & Analytics"
+    description: >
+      Implement comprehensive monitoring, alerting, and performance tracking across the system, including real-time dashboards, ML model performance monitoring, and detailed logging of edge deployments.
+    user_stories:
+      - title: "Create Power BI Dashboards for Real-time Plant Operations"
+        description: >
+          As a plant operator, I want real-time operational dashboards in Power BI, so that I can immediately visualize plant performance metrics and identify anomalies or issues that require attention.
+        acceptance_criteria:
+          - "Power BI dashboards are developed and display real-time plant performance metrics."
+          - "Dashboards are accessible to plant operators."
+          - "Operators can immediately visualize key performance indicators (KPIs) and operational data."
+          - "The dashboards effectively highlight anomalies or issues that require immediate attention."
+      - title: "Set Up Automated Alerts for Critical Sensor and Model Outputs"
+        description: >
+          As a plant manager, I want to configure alerts based on critical sensor readings and ML model outputs, so that immediate notifications (e.g., via Teams or email) are sent when predefined thresholds are breached.
+        acceptance_criteria:
+          - "Alerting mechanisms are configured for critical sensor readings."
+          - "Alerting mechanisms are configured for critical ML model outputs."
+          - "Notifications (e.g., Teams messages, emails) are sent automatically when predefined thresholds are breached."
+          - "Plant managers receive timely and actionable alerts."
+      - title: "Collect Edge Telemetry and Health Data in Log Analytics"
+        description: >
+          As an IT administrator, I want to integrate Log Analytics for comprehensive telemetry, ML model performance monitoring, and health assessments of edge deployments, so that operational issues can be proactively identified and diagnosed.
+        acceptance_criteria:
+          - "Edge telemetry data is successfully collected and ingested into Log Analytics."
+          - "ML model performance metrics from edge deployments are monitored in Log Analytics."
+          - "Health assessments of edge deployments are visible and actionable within Log Analytics."
+          - "IT administrators can proactively identify and diagnose operational issues using the collected data."
+      - title: "Diagnose and Resolve Fabric Notebook Failures"
+        description: >
+          As a data engineer, I want to identify and resolve issues causing random failures and excessive idle time in Fabric notebooks, so that daily data processing jobs run reliably and efficiently in a production environment.
+        acceptance_criteria:
+          - "A process for identifying root causes of random failures in Fabric notebooks is established."
+          - "Mechanisms are in place to detect and address excessive idle time in Fabric notebooks."
+          - "Solutions are implemented to resolve identified issues, leading to reduced failures."
+          - "Daily data processing jobs run reliably and efficiently in the production environment."
+      - title: "Restore Functionality of Fabric Capacity Metrics Dashboard"
+        description: >
+          As a data engineer, I want the Fabric capacity metrics dashboard to be fixed, so that resource utilization can be accurately monitored, capacity planning is informed, and costs can be managed effectively.
+        acceptance_criteria:
+          - "The Fabric capacity metrics dashboard is fully functional."
+          - "Resource utilization is accurately displayed on the dashboard."
+          - "The dashboard provides sufficient data to inform capacity planning decisions."
+          - "Data from the dashboard aids in effective cost management."
+
+  - title: "Vendor Data Transfer"
+    description: >
+      Establish secure and efficient mechanisms for data sharing and collaboration with external vendors, primarily through SFTP, with consideration for alternative programmatic solutions.
+    user_stories:
+      - title: "Configure ADF Pipelines for Vendor SFTP Data Transfers"
+        description: >
+          As a data engineer, I want to utilize Azure Data Factory pipelines for secure data transfers to external SFTP servers, so that efficient vendor data sharing and collaboration is enabled.
+        acceptance_criteria:
+          - "Azure Data Factory pipelines are configured to connect to specified external SFTP servers."
+          - "Data is successfully transferred to and from SFTP servers using ADF."
+          - "Data transfers are secure (e.g., using SSH keys or secure authentication)."
+          - "Data transfer efficiency meets defined performance requirements."
+            - title: "Securely Manage Vendor SFTP/API Credentials"
+              description: >
+                As a security architect, I want to ensure that credentials (usernames, passwords, certificates) used for vendor SFTP and API integrations (e.g., VendorR, VendorK) are securely stored (preferably in Key Vault) and managed, with appropriate access controls, so that sensitive access information is protected.
+              acceptance_criteria:
+                - "All vendor SFTP and API credentials are stored securely (e.g., in Azure Key Vault)."
+                - "Access controls are implemented to ensure only authorized services/applications can retrieve credentials."
+                - "Credential management adheres to best practices (e.g., principle of least privilege)."
+                - "Sensitive access information is protected from unauthorized access or disclosure."       - title: "Assess Data Sensitivity for External Vendor Transfers"
+        description: >
+          As a data owner, I want to assess the sensitivity of data (e.g., transfer orders, product movement volumes) being transferred to external vendors, so that appropriate security measures (e.g., PGP encryption) are applied, and business impact from data compromise is minimized.
+        acceptance_criteria:
+          - "A process for assessing the sensitivity of data transferred to external vendors is defined and followed."
+          - "Data sensitivity levels are assigned to all relevant data types (e.g., transfer orders, product movement volumes)."
+          - "Appropriate security measures (e.g., PGP encryption) are applied based on data sensitivity."
+          - "The potential business impact from data compromise is assessed and documented."
+          - "Security measures effectively minimize the risk of data compromise."
+      - title: "Evaluate C# Function App as SFTP Transfer Alternative"
+        description: >
+          As a data engineer, I want to evaluate the use of a C# function app with a timer trigger for SFTP transfers as an alternative to ADF pipelines, so that a more lightweight solution is available if long-running or complex data transfer pipelines are not strictly necessary.
+        acceptance_criteria:
+          - "A C# function app is developed to perform SFTP transfers."
+          - "The function app is configured with a timer trigger for scheduled transfers."
+          - "The C# function app's performance and reliability are evaluated against ADF pipelines for specified use cases."
+          - "Documentation is provided on when a C# function app is a more suitable alternative than ADF for specific data transfer scenarios."

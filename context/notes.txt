@@ -1,0 +1,54 @@
+ACME: Workshops:
+
+- Using Hive MQTT Broker Enterprise with "native connection [Azure] Data Lake [Blob Storage]" to land OT data to parquet files.
+- Heard conflicting priorities in use of Fabric and Data Lake in cloud and the need to NOT have to be connected to the Internet for operations: is there an explicit strategy for this starting with cloud and then shifting ML ops to on-prem?
+- What volume of data do you envision for "marrying EntERPSys_A financial numbers with OT sensory data?"
+- Would need to use Fabric Managed Private Endpoints to connect Fabric to Storage; MQTT only connects to Blob Storage; however, OneLake shortcuts do not yet support connections to ADLS Gen2 storage accounts using managed private endpoints.
+- May need to use EventStream from Event Hub to land IOT data directly into the Fabric workspace (OneLake)
+- For ML, my guess is that the data scientists will prefer to work against the raw data, so a medalion architecture may not be necessary in this case.
+- We should set up ADO repo(s) for source control and devops for model deployments.
+- Do they want to use Databricks for the model data processing?
+- How will Power BI fit into the picture for them? Reporting & analysis requirements/needs?
+- What does the UNS (Unified Namespace) mean to them?
+
+
+----------------------------------------------------------------------------------
+- Which capacity is Participant_P using that is timing out?  Is he using the F2 capacity?
+
+A better practice would probably be the following:
+- Use Event Hub to scale ingestion of IoT data from on-premises MQTT Broker
+- Use EventStream to perform initial parsing of data as it lands to minimize amount of Spark processing required since the data is already in transit.
+- Determine level of granularity needed; if possible, EventStream can perform some initial aggregation if useful
+- Recommend enabling VertiParquet in the gold layer for optimal Power BI reporting;
+
+----------------------------------------------------------------------------------
+System Diagram Notes:
+
+Tenant: 
+On-Premises System:
+This lays out the environment for a small manufacturer customer. 
+The customer will be pushing IoT data from a plant floor into Fabric through Event Hub. 
+The customer is using HiveMQ MQTT Broker on the plant floor. 
+To communicate to Event Hub will require Acme-Sub to install the HiveMQ Enterprise Extension for Event Hubs that translates the MQTT messages from the plant floor into AMQP messages to send to the Event Hubs endpoint. 
+Event Streams will land the data directly into the Fabric Bronze workspace in Delta table format. 
+This Silver workspace will run T-SQL and Notebooks orchestrated by Fabric Pipelines to cleanse and standardize the incoming data from the Bronze Fabric into the Silver Fabric workspace. 
+Both the bronze and silver workspaces will have a Lakehouse. The gold workspace will have a data warehouse. 
+ML Model development will happen in the bronze workspace and get deployed into the silver and gold workspaces. 
+MLFlow will be used in the bronze workspace environment to manage the development and experimentation phases of the machine learning lifecycle. 
+MLOps will be used to manage the end-to-end lifecycle of the machine learning models from development to deployment and monitoring. 
+Azure DevOps will be used to manage the development workflows from features to user stories and tasks. 
+GitHub Enterprise will be integrated with Azure DevOps to manage source control for all development work. 
+To manage the deployment of ML Models to IoT Edge running on the manufacturer's plant floor, the models will be bundled into Container Registries and deployment to the edge orchestrated by IoT Hub. 
+Telemetry from the models running on the edge will be sent back and stored in Log Analytics. 
+Arc will function as the control plane for managing IoT Edge on the plant floor. 
+Also, the customer will be pulling in data from the parent company's EntERPSys_A environment using a Fabric Shortcut to pull in financial data they want to combine with plant floor operational data to calculate operational costs. 
+Finally, the customer needs to batch up prepared data from the data warehouse and send it to external vendors via SFTP using Data Factory as the orchestrating platform. 
+Specific technologies used: Azure DevOps, GitHub, Data Factory, SQL, Python, MLFlow, ML Ops, Fabric, Lakehouse, Data Warehouse, ML Model, Event Hub, Event Grid, Container Registry, Arc, Log Analytics, IoT Hub, ML Notebooks.
+
+
+PowerBI-Workspaces:
+These workspaces are intended to break out dev, test, and production spaces for different audiences with different access rights.
+Essentially, the idea is to have a Semantic Model in the workspace that points directly at the Fabric Gold workspace Warehouse that is optimized for VertiParquet query. 
+Power BI reports query the semantic model in Direct Lake mode to take full advantage of the data where it's at and the full DAX capabilities of the in-memory frame of the data in Fabric.
+
+
