@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"anonymization_map.json": true
+		},
+		"search.exclude": {
+			"anonymization_map.json": true
+		}
+	}
+}

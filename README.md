@@ -10,27 +10,7 @@ This repository showcases how to transform disparate project inputs—including 
 
 ## Input Sources
 
-The project synthesizes the following types of artifacts:
-
-### 📝 Workshop Transcripts (TXT format)
-
-- `Fabric-Architecture Workshop 1.txt` - Initial architecture discussions
-- `Fabric-Architecture Workshop 2b.txt` - Detailed technical requirements
-- `Fabric-Architecture Workshop 3.txt` - Implementation planning
-- `Fabric-Architecture Workshop 4.txt` - Security and deployment considerations
-- `Security Workshop 5.txt` - Security-focused requirements
-- `Overview Transcript.txt` - High-level project overview
-
-### 🖼️ Architecture Diagrams (PNG format)
-
-- `AzureTenant.png` - tenant architecture overview
-- `OnPremSystem.png` - On-premises system architecture
-- `PowerBI-Workspaces.png` - Business intelligence workspace design
-
-### 📊 Presentation Materials (PowerPoint)
-
-- `SystemContextDiagrams.pptx` - Comprehensive system context diagrams
-- Contains visual representations of system boundaries, data flows, and component relationships
+The project synthesizes a variety of artifact types (e.g., workshop transcripts, architecture diagrams, presentation decks) into a structured backlog. Previously referenced sample transcript, diagram, and deck files have been removed from the repository to reduce size. You can supply your own source materials and follow the same workflow.
 
 ## Output Artifacts
 
@@ -38,22 +18,19 @@ The accelerator produces structured Agile artifacts in markdown format:
 
 ### 📋 Product Backlogs
 
-- `product-backlog-cs4.md` - Feature-user story focused AI-generated backlog based on Claude Sonnet 4 Agent output.
-- `product-backlog-gem-f-us.md` - Feature-user story focused AI-generated backlog based on Gemini 2.5 Pro Agent output.
-- `product-backlog-gem.md` - Alternative backlog  with task breakdown based on Gemini 2.5 Pro Agent output.
-- `product-backlog-gpt5.md` - Feature-user story focused AI-generated backlog based on GPT-5 Agent output.
+- `backlog-md/product-backlog-gem.md` - Backlog with task breakdown (Gemini 2.5 Pro output).
+- `backlog-md/product-backlog-gpt5.md` - Feature/user story focused backlog (GPT-5 output).
 
 ### 📄 Work Item Documentation
 
-- `WorkItemsFromWorkshops.docx` - Review-ready backlog document (live-edit capable)
-- `product-backlog-tasklevel.md` - Direct extraction from workshop discussions
-- `product-backlog-tasklevel.yaml` - Structured YAML format for tool integration
+- `review-doc/WorkItemsFromWorkshops.docx` - Review-ready backlog document (live-edit capable)
+- `backlog-yml/product-backlog-tasklevel.yaml` - Structured YAML format for tool integration (task-level granularity)
 
 ## How to Use GitHub Copilot for Synthesis
 
 ### Step 1: Context Preparation
 
-1. **Open the Workspace**: Load the `ProductBacklogAccelerator.code-workspace` in VS Code
+1. **Open the Workspace**: Load the `backlogbuilder.code-workspace` in VS Code
 2. **Enable Copilot**: Ensure GitHub Copilot is active and authenticated
 3. **Load Context**: Open key files to provide Copilot with context about the project
 
@@ -184,21 +161,21 @@ Instructions:
 
 ### Step 9: Review Tasks and Convert to YAML
 
-Review the tasks to make sure they make sense.  You have want to remove some tasks or combine them.  User stories may also need to be reassigned under different features based on area of concern (step 7).
-Once you have a full backlog at the user story level or the task level, you'll want to convert the document to a YAML file so that it can be imported into your ADO project.
+Review the tasks to make sure they make sense. You may want to remove or combine some tasks. User stories may also need to be reassigned under different features based on area of concern (step 7).
+Once you have a full backlog at the user story level or the task level, you can convert a task-level markdown document (your own file) to YAML so that it can be imported into your ADO project.
 
-Use the [azdevops-workitem-loader](https://github.com/softwaresalt/azdevops-workitem-loader) project to load your backlog to ADO.
+Use the [azdevops-workitem-loader](https://github.com/softwaresalt/azdevops-workitem-loader) project to load your backlog to ADO. The repository already includes an example YAML file at `backlog-yml/product-backlog-tasklevel.yaml`.
 
 ```markdown
 ### Prompt Example
-Instructions:  
-- Restructure the contents of product-backlog-tasklevel.md as a YAML file.
+Instructions:
+- Restructure the contents of <your-task-level-markdown-file>.md as a YAML file.
 - Feature nodes should have a Title and Description.
 - User Story nodes under the feature should be indented as children of the feature.
 - User Story nodes should include Title, Description, Acceptance Criteria.
 - Task nodes under the User Story nodes should be indented as children of the User Story.
-- Task nodes should include Title and Description.  The description may include Description, Technical - Details, Expected Outcomes, Definition of Done, and Dependencies.
-- For text that is designated for either a Description or Acceptance Criteria field, format the text using Markdown format based on the original formatting in the Markdown Doc.
+- Task nodes should include Title and Description. The description may include Description, Technical Details, Expected Outcomes, Definition of Done, and Dependencies.
+- Preserve original markdown formatting inside description and acceptance criteria fields.
 ```
 
 ## Best Practices
