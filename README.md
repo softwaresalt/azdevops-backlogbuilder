@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Product Backlog Accelerator is a project that demonstrates how to leverage **GitHub Copilot** and AI-powered development practices to synthesize various project artifacts into well-structured Agile features and user stories. This project focuses on the ACME Predictive Maintenance project, but the methodology can be applied to any software development initiative.
+The Product Backlog Accelerator is a project that demonstrates how to leverage **GitHub Copilot** and AI-powered development practices to synthesize various project artifacts into well-structured Agile features and user stories. This methodology can be applied to any software development initiative.
 
 ## Purpose
 
