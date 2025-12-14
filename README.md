@@ -49,12 +49,6 @@ technical decisions, and business needs. Focus on identifying:
 - Stakeholder concerns"
 ```
 
-**Copilot Techniques:**
-
-- Use `/doc` command to generate documentation from transcript content
-- Leverage inline chat to ask specific questions about transcript sections
-- Use `Ctrl+I` to generate summaries of long transcript sections
-
 ### Step 3: Architecture Diagram Interpretation
 
 While Copilot cannot directly read images, you can:
@@ -307,6 +301,16 @@ copilot-instructions.md that includes:
 4. **Update Regularly**: Keep instructions current with project changes
 5. **Team Alignment**: Ensure all team members understand and follow the instructions
 
+## Using Specialized Agents
+
+In addition to the general `copilot-instructions.md`, this project utilizes specialized agent files to guide Copilot in specific roles.
+
+### Product Owner Agent
+
+A dedicated agent file is located at `.github/agents/productowner.agent.md`. This file is designed to help Copilot act as an expert Product Owner when developing the backlog.
+
+To use this agent, select *productowner* from the list of agents in GitHub Copilot next to the model selector.
+
 ## Getting Started
 
 1. **Install GitHub Copilot**
@@ -318,6 +322,7 @@ copilot-instructions.md that includes:
    - Open key transcript files
    - Review existing backlog examples
    - Include copilot instructions in `.github/copilot-instructions.md`
+   - Open the Product Owner agent file: `.github/agents/productowner.agent.md`
    - If using Gemini Code Assist, include instructions in `gemini.md`
 
 1. **Start Synthesizing**

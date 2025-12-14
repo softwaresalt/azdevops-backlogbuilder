@@ -230,7 +230,7 @@
 
 **Objective:** Establish robust multi-level processing of telemetry into NASA data product levels: Level 0 (raw binary), Level 1 (calibrated), Level 2 (derived), and Level 3 (aggregated for science and ML training). Handles schema drift, data quality, aggregation efficiency, and lineage automation.
 
-*(All user stories F3.1–F3.4 retain their original detail but are rewritten for the SOC data pipeline context; e.g., “Bronze Streaming Ingestion Notebook” → “Level 0 Ingestion Notebook,” “Silver Transformation” → “Level 1 Calibration Job,” and “Gold Aggregations” → “Level 3 Science Product Aggregation.”)*
+(All user stories F3.1–F3.4 retain their original detail but are rewritten for the SOC data pipeline context; e.g., "Bronze Streaming Ingestion Notebook" → "Level 0 Ingestion Notebook," "Silver Transformation" → "Level 1 Calibration Job," and "Gold Aggregations" → "Level 3 Science Product Aggregation.")
 
 ---
 

@@ -11,27 +11,34 @@ This document outlines the product backlog for the JIMO-2 future state autonomou
 **Description:** As a Flight Software (FSW) Engineer, I want to implement and configure the SpaceWire data bus service on our redundant flight computers to ensure high availability and prevent a single point of failure for our on-board data pipeline.
 
 **Acceptance Criteria:**
+
 - Redundant SpaceWire interfaces (Side A / Side B) are operational on the flight computers.
 - The C&DH (Command & Data Handling) FSW is configured for automatic failover.
 - Performance is benchmarked to handle the expected data throughput from all instruments.
 - Configuration is managed via the FSW build process and stored in the GitHub repository.
 
 #### Task: Activate and Test Redundant RAD750 Flight Computers
+
 **Description:** Provision and test the redundant RAD750 flight computers (Side A and Side B) to host the FSW services.
+
 - **Technical Details:** Power on both RAD750 computers. Ensure both are running the bootloader and base FSW. Configure a watchdog timer and heartbeat mechanism between the two for failover.
 - **Expected Outcomes:** Two configured and running flight computers ready for the C&DH FSW load.
 - **Definition of Done:** Both computers are provisioned, networked via their cross-links, and accessible. The base OS and C&DH services are installed.
 - **Dependencies:** Access to the "flatsat" or "iron bird" testbed.
 
 #### Task: Deploy and Link SpaceWire FSW Service
+
 **Description:** Install the SpaceWire FSW driver on each flight computer and configure them to manage the data bus.
+
 - **Technical Details:** Deploy the FSW module for the SpaceWire driver. Modify the FSW configuration tables to initialize the bus and listen for instrument packets. Verify that both RAD750s can see the bus.
 - **Expected Outcomes:** A functioning, redundant SpaceWire bus service.
 - **Definition of Done:** The bus is formed and stable. Both computers report a successful connection to the bus. The bus status is "nominal" in telemetry.
 - **Dependencies:** Provisioned flight computers.
 
 #### Task: Configure C&DH for Bus Failover
+
 **Description:** Set up a failover mechanism in the C&DH service to automatically switch control of the bus from Side A to Side B.
+
 - **Technical Details:** Configure a health check to monitor the status of the primary bus controller. In the event of a failure (e.g., no heartbeat), the redundant computer takes control of the bus.
 - **Expected Outcomes:** A single, virtual endpoint for instruments to publish data.
 - **Definition of Done:** The failover is configured and successfully tested. A test is run by powering down the primary computer and verifying that instruments remain connected.
@@ -42,12 +49,15 @@ This document outlines the product backlog for the JIMO-2 future state autonomou
 **Description:** As a Systems Engineer, I want to design and implement a standardized, hierarchical packet structure (based on the CCSDS standard) within the FSW, so that all telemetry data is organized, addressable, and context-rich.
 
 **Acceptance Criteria:**
+
 - A document defining the telemetry packet hierarchy (e.g., `Mission/Spacecraft/Instrument/PacketID/Measurement`) is created and approved.
 - The C&DH FSW is configured to route packets based on this structure.
 - Example data from a pilot instrument (e.g., Radar) is published to the bus using the correct packet format.
 
 #### Task: Design the Telemetry Packet Hierarchy
+
 **Description:** Design the specific packet Application ID (APID) hierarchy for JIMO-2 based on the CCSDS model and mission conventions.
+
 - **Technical Details:** Collaborate with instrument and FSW engineers to define the APIDs. Create a document that specifies the naming convention for each packet. Include definitions for standard telemetry and metadata.
 - **Expected Outcomes:** A finalized Interface Control Document (ICD) for telemetry.
 - **Definition of Done:** The ICD is reviewed and approved by all stakeholders. The document is checked into the project's GitHub repository.
